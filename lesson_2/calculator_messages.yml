@@ -1,0 +1,40 @@
+en:
+  language: "You've selected English"
+  welcome: 'Welcome to Calculator! Enter your name:'
+  valid_name: 'Make sure you entered a valid name.'
+  greeting: "Hi #{name}!"
+  first_number: "What's the first number"
+  num_error: "Hmmm..that doesn't look like a valid number"
+  second_number: "What's the second number"
+  operator_prompt:
+    What operation would you like to perform?
+    1) add
+    2) subtract
+    3) multiply
+    4) divide
+  operator_error: "Must choose 1, 2, 3, or 4!"
+  operator_msg: " the two numbers..."
+  result: "The result is "
+  repeat: "Do you want to perform another calculation? (Y to calculate again)"
+  end: "Thank you for using the calculator. Good bye!"
+  
+es:
+  language: "Has elegido Español"
+  welcome: "Bienvenido/a. Como te llamas?"
+  valid_name: "Venga, dime tu nombre en serio."
+  greeting: "¡Hola"
+  first_number: "Escribe el primer numero"
+  num_error: "Eso no parece ser un numero válido. Intenta de nuevo."
+  second_number: "Escribe el segundo numero"
+  operator_prompt:
+    ¿Qué te gustaría hacer?
+    1) agregar
+    2) restar
+    3) multiplicar
+    4) dividir
+  operator_error:  "Debes elegir 1, 2, 3, o 4!"
+  operator_msg: " los dos numeros..."
+  result: "El resultado es "
+  repeat: "¿Te gustaría repetir? (elige y para sí)"
+  end: "Gracias. Chao!"
+  
