@@ -30,6 +30,11 @@ def display_board(brd)
 end
 # rubocop:enable Metrics/AbcSize
 
+def joinor(arr, delimiter=', ', word='or')
+  arr[-1] = "#{word} #{arr.last}" if arr.size > 1
+  arr.join(delimiter)
+end
+
 def initialize_board
   new_board = {}
   (1..9).each { |num| new_board[num] = INITIAL_MARKER }
@@ -43,7 +48,7 @@ end
 def player_places_piece!(brd)
   square = ''
   loop do
-    prompt "Choose a square (#{empty_squares(brd).join(', ')}):"
+    prompt "Choose a square (#{joinor(empty_squares(brd))}):"
     square = gets.chomp.to_i
     break if empty_squares(brd).include?(square)
     prompt "Sorry, that's not a valid choice."
@@ -53,7 +58,16 @@ def player_places_piece!(brd)
 end
 
 def computer_places_piece!(brd)
-  square = empty_squares(brd).sample
+  square = nil
+  WINNING_LINES.each do |line|
+    square = find_at_risk_square(line, brd)
+    break if square
+  end
+
+  if !square
+    square = empty_squares(brd).sample
+  end
+
   brd[square] = COMPUTER_MARKER
 end
 
@@ -76,6 +90,47 @@ def detect_winner(brd)
   nil
 end
 
+scores = {computer: 0, player: 0}
+
+def keep_score(user, scores)
+  increase_score(user, scores)
+  declare_winner(user, scores)
+  display_scores(scores)
+end
+
+def increase_score(user, scores)
+  scores[user.downcase.to_sym] += 1  
+end
+
+def display_scores(scores)
+  prompt "Player: #{scores[:player]} Computer: #{scores[:computer]}"
+end
+
+def declare_winner (user, scores)
+  if scores.value?(5)
+    winner_message(user)
+    reset_scores(scores)
+  end
+end
+
+def winner_message(user)
+  prompt "#{user} wins the game!"
+  prompt "Game over"
+end
+
+def reset_scores(scores)
+  scores[:player] = 0
+  scores[:computer] == 0
+end
+
+def find_at_risk_square(line, board)
+  if board.values_at(*line).count('X') == 2
+    board.select{|k,v| line.include?(k) && v == ' '}.keys.first
+  else
+    nil
+  end
+end
+
 loop do
   board = initialize_board
 
@@ -93,6 +148,7 @@ loop do
 
   if someone_won?(board)
     prompt "#{detect_winner(board)} won!"
+    keep_score(detect_winner(board), scores)
   else
     prompt "It's a tie!"
   end
