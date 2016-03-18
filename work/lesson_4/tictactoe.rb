@@ -61,42 +61,24 @@ end
 
 def computer_places_piece!(brd)
   square = nil
-  
-#   # defense first
-#   WINNING_LINES.each do |line|
-#     square = find_at_risk_square(line, brd, PLAYER_MARKER)
-#     break if square
-#   end
-# binding.pry
-#   # offense
-#   if !square
-#     WINNING_LINES.each do |line|
-#       square = find_at_risk_square(line, brd, COMPUTER_MARKER)
-#       break if square
-#     end
-#   end
-#   binding.pry
-  # offense
+
   square = find_move(brd, COMPUTER_MARKER, square)
-  
-  binding.pry
-#  defense
+
   if !square
-   square = find_move(brd, PLAYER_MARKER, square)
+    square = find_move(brd, PLAYER_MARKER, square)
   end
-  binding.pry
-  
+
   if !square && brd[5] == INITIAL_MARKER
     brd[5] = COMPUTER_MARKER
   elsif !square
     square = empty_squares(brd).sample
   end
-  
+
   brd[square] = COMPUTER_MARKER
 end
 
 def find_move(board, marker, square)
-   WINNING_LINES.each do |line|
+  WINNING_LINES.each do |line|
     square = find_at_risk_square(line, board, marker)
     break if square
   end
@@ -122,7 +104,7 @@ def detect_winner(brd)
   nil
 end
 
-scores = {computer: 0, player: 0}
+scores = { computer: 0, player: 0 }
 
 def keep_score(user, scores)
   increase_score(user, scores)
@@ -131,14 +113,14 @@ def keep_score(user, scores)
 end
 
 def increase_score(user, scores)
-  scores[user.downcase.to_sym] += 1  
+  scores[user.downcase.to_sym] += 1
 end
 
 def display_scores(scores)
   prompt "Player: #{scores[:player]} Computer: #{scores[:computer]}"
 end
 
-def declare_winner (user, scores)
+def declare_winner(user, scores)
   if scores.value?(5)
     winner_message(user)
     reset_scores(scores)
@@ -157,9 +139,7 @@ end
 
 def find_at_risk_square(line, board, marker)
   if board.values_at(*line).count(marker) == 2
-    board.select{|k,v| line.include?(k) && v == INITIAL_MARKER}.keys.first
-  else
-    nil
+    board.select { |k, v| line.include?(k) && v == INITIAL_MARKER }.keys.first
   end
 end
 
@@ -172,34 +152,24 @@ def places_piece!(brd, current_player)
 end
 
 def alternate_player(current_player)
-  if current_player == 'computer'
-    current_player = 'player'
-  else
-    current_player = 'computer'
-  end
+  current_player = if current_player == 'computer'
+                     'player'
+                   else
+                     'computer'
+                   end
 end
 
 loop do
   board = initialize_board
-  
+
   current_player = 'player'
-  
+
   loop do
     display_board(board)
     places_piece!(board, current_player)
     current_player = alternate_player(current_player)
     break if someone_won?(board) || board_full?(board)
   end
-  
-  # loop do
-  #   display_board(board)
-
-  #   player_places_piece!(board)
-  #   break if someone_won?(board) || board_full?(board)
-
-  #   computer_places_piece!(board)
-  #   break if someone_won?(board) || board_full?(board)
-  # end
 
   display_board(board)
 
